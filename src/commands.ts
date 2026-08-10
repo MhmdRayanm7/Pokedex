@@ -14,11 +14,10 @@ export function getCommands(): Record<string, CLICommand> {
       callback: commandExit,
     },
 
-    help:{
-        name: "help",
-        description: "Help for Pokedex",
-        callback:commandHelp,
+    help: {
+      name: "help",
+      description: "Help for Pokedex",
+      callback: commandHelp,
     },
-
   };
 }

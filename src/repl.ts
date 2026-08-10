@@ -22,7 +22,7 @@ export function startREPL() {
     const words = cleanInput(input);
     const commandName = words[0];
     const command = commands[commandName];
-      
+
     if (command) {
       try {
         command.callback(commands);
@@ -34,7 +34,5 @@ export function startREPL() {
     }
 
     rl.prompt();
-    
   });
-
 }
