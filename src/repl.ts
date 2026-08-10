@@ -9,19 +9,19 @@ export function cleanInput(input: string): string[] {
   return input.trim().toLowerCase().split(/\s+/);
 }
 
-export function startREPL(state: State) {
+export async function startREPL(state: State) {
   state.readline.prompt();
-
+  
   const commands = getCommands();
 
-  state.readline.on("line", (input) => {
+  state.readline.on("line",async  (input) => {
     const words = cleanInput(input);
     const commandName = words[0];
     const command = state.commands[commandName];
 
     if (command) {
       try {
-        command.callback(state);
+        await command.callback(state);
       } catch (error) {
         console.log(error);
       }
