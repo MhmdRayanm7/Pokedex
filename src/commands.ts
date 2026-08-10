@@ -3,6 +3,7 @@ import { commandHelp } from "./command_help.js";
 import { commandMap } from "./command_map.js";
 import { commandMapB } from "./command_mapb.js";
 import { CLICommand } from "./state.js";
+import { commandExplore } from "./command_explore.js";
 
 export function getCommands(): Record<string, CLICommand> {
   return {
@@ -17,17 +18,26 @@ export function getCommands(): Record<string, CLICommand> {
       description: "Help for Pokedex",
       callback: commandHelp,
     },
-    
+
     map: {
       name: "map",
-      description: "Displays the names of 20 location areas in the Pokemon world",
+      description:
+        "Displays the names of 20 location areas in the Pokemon world",
       callback: commandMap,
     },
 
     mapb: {
       name: "mapb",
-      description: "Displays the previous 20 locations areas in the Pokemon world",
+      description:
+        "Displays the previous 20 locations areas in the Pokemon world",
       callback: commandMapB,
+    },
+
+    explore: {
+      name: "explore",
+      description:
+        "Explore a location area",
+      callback: commandExplore,
     },
   };
 }
