@@ -1,4 +1,5 @@
 import readline from "node:readline";
+import { getCommands } from "./commands.js";
 
 //The purpose of this function will be to split the user's input into "words" based on whitespace.
 //  It should also lowercase the input and trim any leading or trailing whitespace
@@ -15,15 +16,23 @@ export function startREPL() {
   });
   rl.prompt();
 
-  //parse the input into an array
+  const commands = getCommands();
+
   rl.on("line", (input) => {
     const words = cleanInput(input);
-    if(!words){
-      rl.prompt();
+    const commandName = words[0];
+    const command = commands[commandName];
+      
+    if (command) {
+      try {
+        command.callback(commands);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log("Unknown command");
     }
-    else{
-        console.log(`Your command was: ${words[0]}`)
-    }
+
     rl.prompt();
     
   });
