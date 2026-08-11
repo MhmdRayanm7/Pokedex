@@ -1,5 +1,9 @@
 # Pokedex CLI
 
+![TypeScript](https://img.shields.io/badge/TypeScript-CLI-blue)
+![Node.js](https://img.shields.io/badge/Node.js-Runtime-green)
+![Vitest](https://img.shields.io/badge/Tests-Vitest-yellow)
+
 A command-line Pokedex application built with TypeScript and Node.js.
 
 The application runs as an interactive REPL and allows users to explore Pokemon locations, catch Pokemon, inspect caught Pokemon, and view their personal Pokedex.
