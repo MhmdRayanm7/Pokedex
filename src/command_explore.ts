@@ -6,9 +6,8 @@ export async function commandExplore(
 ): Promise<void> {
   const locationName = args[0];
 
-  if (!locationName) {
-    console.log("Please provide a location area.");
-    return;
+  if (args.length !== 1) {
+    throw new Error("you must provide a location name");
   }
 
   console.log(`Exploring ${locationName}...`);
