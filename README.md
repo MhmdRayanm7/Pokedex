@@ -8,6 +8,10 @@ A command-line Pokedex application built with TypeScript and Node.js.
 
 The application runs as an interactive REPL and allows users to explore Pokemon locations, catch Pokemon, inspect caught Pokemon, and view their personal Pokedex.
 
+## Demo
+
+![Pokedex CLI Demo](assets/demo.png)
+
 ## Features
 
 - Interactive command-line REPL
@@ -20,6 +24,50 @@ The application runs as an interactive REPL and allows users to explore Pokemon 
 - Automatic cache cleanup
 - Error handling for invalid commands and API requests
 - Unit tests with Vitest
+
+
+## Architecture
+
+The project uses a simple command-based architecture:
+
+```text
+User Input
+   ↓
+REPL
+   ↓
+Command Registry
+   ↓
+Command Handler
+   ↓
+State
+   ↓
+PokeAPI Client
+   ↓
+Cache
+   ↓
+PokeAPI
+```
+
+### Main Components
+
+- **REPL**  
+  Reads user input and passes commands to the correct handler.
+
+- **Command Registry**  
+  Stores all available commands and their callback functions.
+
+- **Command Handlers**  
+  Each command has its own file and handles one responsibility.
+
+- **State**  
+  Stores shared application data such as the PokeAPI client, pagination URLs, and caught Pokemon.
+
+- **PokeAPI Client**  
+  Handles requests to the external Pokemon API.
+
+- **Cache**  
+  Stores recent API responses to avoid unnecessary repeated requests.
+
 
 ## Commands
 
