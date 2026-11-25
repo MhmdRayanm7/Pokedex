@@ -1,12 +1,14 @@
+
 # Pokedex CLI
 
-![TypeScript](https://img.shields.io/badge/TypeScript-CLI-blue)
-![Node.js](https://img.shields.io/badge/Node.js-Runtime-green)
-![Vitest](https://img.shields.io/badge/Tests-Vitest-yellow)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white)
+![Vitest](https://img.shields.io/badge/Vitest-6E9F18?logo=vitest&logoColor=white)
+![PokeAPI](https://img.shields.io/badge/Pok%C3%A9API-FFCB05?logo=pokemon&logoColor=black)
 
-A command-line Pokedex application built with TypeScript and Node.js.
+An interactive command-line Pokedex application built with TypeScript and Node.js as part of the [Boot.dev Build a Pokedex](https://www.boot.dev/courses/build-pokedex-cli-typescript) guided project.
 
-The application runs as an interactive REPL and allows users to explore Pokemon locations, catch Pokemon, inspect caught Pokemon, and view their personal Pokedex.
+The application allows users to explore Pokemon locations, catch Pokemon, inspect their statistics, and manage a personal Pokedex through an interactive REPL.
 
 ## Demo
 
@@ -16,127 +18,92 @@ The application runs as an interactive REPL and allows users to explore Pokemon 
 
 - Interactive command-line REPL
 - Explore Pokemon location areas
-- Paginate forward and backward through locations
-- Catch Pokemon with a probability based on base experience
-- Store caught Pokemon in a personal Pokedex
-- Inspect Pokemon stats and types
-- Cache API responses for faster repeated requests
-- Automatic cache cleanup
+- Forward and backward API pagination
+- Pokemon catching based on base experience
+- Personal in-memory Pokedex
+- Inspect Pokemon statistics and types
+- In-memory API response caching
+- Automatic cache expiration and cleanup
 - Error handling for invalid commands and API requests
-- Unit tests with Vitest
+- Unit testing with Vitest
 
+## Tech Stack
+
+| Technology | Purpose |
+| --- | --- |
+| TypeScript | Application language and type safety |
+| Node.js | JavaScript runtime |
+| PokeAPI | External REST API |
+| Readline | Interactive command-line input |
+| Vitest | Unit testing |
+| NVM | Node.js version management |
 
 ## Architecture
 
-The project uses a simple command-based architecture:
+The application uses a modular, command-based architecture that separates user input, command execution, application state, API requests, and caching.
 
-```text
-User Input
-   ↓
-REPL
-   ↓
-Command Registry
-   ↓
-Command Handler
-   ↓
-State
-   ↓
-PokeAPI Client
-   ↓
-Cache
-   ↓
-PokeAPI
+```mermaid
+flowchart TD
+    User[User Input] --> REPL
+    REPL --> Registry[Command Registry]
+    Registry --> Handler[Command Handler]
+    Handler --> State[Application State]
+    State --> Client[PokeAPI Client]
+    Client --> Cache[In-Memory Cache]
+    Client --> API[External PokeAPI]
 ```
 
 ### Main Components
 
-- **REPL**  
-  Reads user input and passes commands to the correct handler.
+- **REPL:** Reads user input and dispatches commands.
+- **Command Registry:** Maps available commands to their callback functions.
+- **Command Handlers:** Implement individual application features.
+- **Application State:** Manages pagination, caught Pokemon, and shared resources.
+- **PokeAPI Client:** Handles asynchronous HTTP requests.
+- **Cache:** Stores API responses temporarily and removes expired entries.
 
-- **Command Registry**  
-  Stores all available commands and their callback functions.
+## Available Commands
 
-- **Command Handlers**  
-  Each command has its own file and handles one responsibility.
+| Command | Description |
+| --- | --- |
+| `help` | Display available commands |
+| `map` | Display the next 20 location areas |
+| `mapb` | Display the previous 20 location areas |
+| `explore <location>` | Explore Pokemon within a location |
+| `catch <pokemon>` | Attempt to catch a Pokemon |
+| `inspect <pokemon>` | Display information about a caught Pokemon |
+| `pokedex` | List all caught Pokemon |
+| `exit` | Exit the application |
 
-- **State**  
-  Stores shared application data such as the PokeAPI client, pagination URLs, and caught Pokemon.
+## Example Usage
 
-- **PokeAPI Client**  
-  Handles requests to the external Pokemon API.
-
-- **Cache**  
-  Stores recent API responses to avoid unnecessary repeated requests.
-
-
-## Commands
-
-### help
-
-Displays all available commands.
-
-### map
-
-Displays the next 20 Pokemon location areas.
-
-### mapb
-
-Displays the previous 20 location areas.
-
-### explore <location_name>
-
-Displays Pokemon that can be found in a location.
-
-Example:
-
-```text
-explore pastoria-city-area
-```
-
-### catch <pokemon_name>
-
-Attempts to catch a Pokemon.
-
-Example:
-
-```text
-catch pikachu
-```
-
-### inspect <pokemon_name>
-
-Displays information about a Pokemon that has already been caught.
-
-Example:
-
-```text
-inspect pikachu
-```
-
-### pokedex
-
-Displays all Pokemon currently stored in your Pokedex.
-
-### exit
-
-Closes the application.
-
-## Example
+Explore a location:
 
 ```text
 Pokedex > explore pastoria-city-area
+
 Exploring pastoria-city-area...
 Found Pokemon:
  - tentacool
  - tentacruel
  - magikarp
  - gyarados
+```
 
+Catch a Pokemon:
+
+```text
 Pokedex > catch pikachu
+
 Throwing a Pokeball at pikachu...
 pikachu was caught!
+```
 
+Inspect a caught Pokemon:
+
+```text
 Pokedex > inspect pikachu
+
 Name: pikachu
 Height: 4
 Weight: 60
@@ -148,86 +115,117 @@ Types:
  - electric
 ```
 
-## Technologies
+## Caching
 
-- TypeScript
-- Node.js
-- PokeAPI
-- Vitest
+The application implements an in-memory cache for API responses.
+
+- Reduces unnecessary network requests
+- Improves response times for repeated commands
+- Supports configurable cache expiration
+- Automatically removes expired entries
+- Uses TypeScript generics for type-safe cached data
 
 ## Project Structure
 
 ```text
-src/
-├── command_catch.ts
-├── command_exit.ts
-├── command_explore.ts
-├── command_help.ts
-├── command_inspect.ts
-├── command_map.ts
-├── command_mapb.ts
-├── command_pokedex.ts
-├── commands.ts
-├── main.ts
-├── pokeapi.ts
-├── pokecache.ts
-├── repl.ts
-├── repl.test.ts
-└── state.ts
+Pokedex/
+├── assets/
+│   └── demo.png
+├── src/
+│   ├── command_catch.ts
+│   ├── command_exit.ts
+│   ├── command_explore.ts
+│   ├── command_help.ts
+│   ├── command_inspect.ts
+│   ├── command_map.ts
+│   ├── command_mapb.ts
+│   ├── command_pokedex.ts
+│   ├── commands.ts
+│   ├── main.ts
+│   ├── pokeapi.ts
+│   ├── pokecache.ts
+│   ├── repl.ts
+│   ├── repl.test.ts
+│   └── state.ts
+├── .nvmrc
+├── package.json
+├── tsconfig.json
+└── README.md
 ```
 
-## Installation
+## Getting Started
 
-Clone the repository:
+### Requirements
+
+- Node.js
+- npm
+- Git
+- NVM (recommended)
+
+### Installation
 
 ```bash
 git clone https://github.com/MhmdRayanm7/Pokedex.git
 cd Pokedex
+
+nvm install
+nvm use
+
+npm ci
 ```
 
-Install dependencies:
-
-```bash
-npm install
-```
-
-## Running the Project
-
-Build the project:
+### Run the Application
 
 ```bash
 npm run build
+npm start
 ```
 
-Run the application using the script configured in `package.json`.
+Alternatively, run in development mode:
 
-## Tests
+```bash
+npm run dev
+```
 
-Run the test suite with:
+## Testing
+
+Run the test suite:
 
 ```bash
 npm test
 ```
 
-The project uses Vitest for testing input parsing and cache behavior.
+The project uses Vitest to test input parsing and cache behavior.
 
-## API
+## npm Scripts
 
-Pokemon and location data are provided by the PokeAPI.
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Compile and run the application |
+| `npm run build` | Compile TypeScript |
+| `npm start` | Run the compiled application |
+| `npm test` | Run the Vitest test suite |
 
-API responses are cached temporarily to reduce unnecessary repeated network requests and improve response time.
+## Concepts Practiced
 
-## What I Practiced
-
-This project helped me practice:
-
-- Building a command-line REPL
-- Working with asynchronous TypeScript
-- Consuming REST APIs
-- Managing application state
-- Designing a command registry
-- Working with generic types
-- Implementing caching
-- Handling pagination
+- REST API integration
+- Asynchronous programming and promises
+- HTTP requests and JSON responses
+- API pagination
+- In-memory caching and cache expiration
+- TypeScript interfaces and generics
+- Application state management
+- Command registry design
+- Modular application architecture
 - Error handling
-- Writing unit tests
+- Unit testing
+
+## External API
+
+Pokemon and location data are provided by [PokeAPI](https://pokeapi.co/).
+
+An internet connection is required to retrieve data that is not already cached.
+
+---
+
+Built as part of the [Boot.dev](https://www.boot.dev/) backend development learning path.
